@@ -1,19 +1,13 @@
 nameOverride: backstage-payments-service
-
 image:
   repository: ghcr.io/lemar5555/backstage-payments-service
-  tag: initial
+  tag: ""
   pullPolicy: IfNotPresent
-
 replicaCount: 1
-
 service:
   type: ClusterIP
   port: 3000
-
 containerPort: 3000
-
 env:
   LOG_LEVEL: info
-
 resources: {}
