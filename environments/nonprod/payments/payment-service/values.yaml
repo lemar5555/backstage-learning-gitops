@@ -1,0 +1,19 @@
+nameOverride: payment-service
+
+image:
+  repository: ghcr.io/lemar5555/payment-service
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 3000
+
+containerPort: 3000
+
+env:
+  LOG_LEVEL: info
+
+resources: {}
