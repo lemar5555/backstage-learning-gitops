@@ -1,7 +1,7 @@
 nameOverride: backstage-payments-service
 image:
   repository: ghcr.io/lemar5555/backstage-payments-service
-  tag: ""
+  tag: "aab5761"
   pullPolicy: IfNotPresent
 replicaCount: 1
 service:
