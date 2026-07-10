@@ -7,6 +7,8 @@ image:
   tag: ""
   pullPolicy: IfNotPresent
 
+imagePullSecrets: []
+
 service:
   type: ClusterIP
   port: 3000

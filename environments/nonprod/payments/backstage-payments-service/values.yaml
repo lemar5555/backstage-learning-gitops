@@ -3,6 +3,8 @@ image:
   repository: ghcr.io/lemar5555/backstage-payments-service
   tag: "aab5761"
   pullPolicy: IfNotPresent
+imagePullSecrets:
+  - name: ghcr-pull-secret
 replicaCount: 1
 service:
   type: ClusterIP
