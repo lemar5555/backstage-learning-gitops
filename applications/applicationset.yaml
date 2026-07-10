@@ -1,9 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: services
+  name: platform-services
   namespace: argocd
+
 spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+
   generators:
     - git:
         repoURL: https://github.com/lemar5555/backstage-learning-gitops.git
@@ -13,25 +18,36 @@ spec:
 
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{ index .path.segments 1 }}-{{ index .path.segments 2 }}-{{ .path.basename }}'
+
+      labels:
+        environment: '{{ index .path.segments 1 }}'
+        namespace: '{{ index .path.segments 2 }}'
+        service: '{{ .path.basename }}'
+
     spec:
       project: default
 
-      source:
-        repoURL: https://github.com/lemar5555/backstage-learning-gitops.git
-        targetRevision: main
-        path: charts/service
-        helm:
-          valueFiles:
-            - ../../{{path}}/values.yaml
+      sources:
+        - repoURL: https://github.com/lemar5555/backstage-learning-gitops.git
+          targetRevision: main
+          path: charts/service
+          helm:
+            valueFiles:
+              - $values/environments/{{ index .path.segments 1 }}/{{ index .path.segments 2 }}/{{ .path.basename }}/values.yaml
+
+        - repoURL: https://github.com/lemar5555/backstage-learning-gitops.git
+          targetRevision: main
+          ref: values
 
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path[2]}}'
+        namespace: '{{ index .path.segments 2 }}'
 
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+
         syncOptions:
           - CreateNamespace=true
